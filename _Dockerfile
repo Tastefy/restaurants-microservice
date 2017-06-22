@@ -1,0 +1,21 @@
+from node:latest
+
+# Create a new user to our new container and avoid the root user
+ENV APP_FOLDER=/usr/src/app
+
+
+# Create app directory
+RUN mkdir -p $APP_FOLDER
+WORKDIR $APP_FOLDER
+
+COPY package.json $APP_FOLDER
+RUN npm install
+
+COPY . $APP_FOLDER
+RUN npm run build
+
+# RUN chown -R $user:$user $APP_FOLDER/*
+# USER $user
+
+EXPOSE 8888
+CMD ["npm", "start"]
